@@ -4,7 +4,7 @@ CREATE OR REPLACE FUNCTION arc_energo.sock_send(arg_host character varying, arg_
  LANGUAGE plpython2u
 AS $function$
 import socket
-import time
+#import time
 ret = ''
 sock = socket.socket()
 sock.settimeout(1)
@@ -15,7 +15,7 @@ except Exception as exc:
 else:
     sock.send(arg_msg.decode('utf-8').encode('cp1251'))
 
-time.sleep(1)
+#time.sleep(1)
 sock.close()
 return ret
 $function$
