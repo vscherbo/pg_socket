@@ -1,35 +1,19 @@
 -- Drop table
 
--- DROP TABLE arc_energo.topic_msg_queue;
+DROP TABLE arc_energo.topic_msg_queue;
 
 CREATE TABLE arc_energo.topic_msg_queue (
-	msg_id serial NOT NULL,
-	dt_create timestamp NOT NULL DEFAULT now(),
-	status int4 NOT NULL DEFAULT 0, -- 0 - к отправке¶10 - удачно отправлен всем¶20 - удачно отправлен хотя бы одному
-	tag varchar NOT NULL,
-	sender varchar NOT NULL DEFAULT 0,
-	msg varchar NOT NULL,
-	dt_sent timestamp NULL,
-	delivered inet[] NULL,
-	CONSTRAINT topic_msg_queue_pk PRIMARY KEY (msg_id),
-	CONSTRAINT topic_msg_queue_fk FOREIGN KEY (tag) REFERENCES topic(tag) ON UPDATE CASCADE
+	ip inet NOT NULL,
+	msg_id int4 NOT NULL,
+    dt_sent timestamp NULL DEFAULT clock_timestamp(),
+    status int4 NOT NULL DEFAULT 0,
+    dt_delivered timestamp NULL,
+	sent_result varchar NULL,
+	CONSTRAINT topic_msg_queue_pk PRIMARY KEY (ip, msg_id),
+	CONSTRAINT topic_msg_fk FOREIGN KEY (msg_id) REFERENCES topic_msg(msg_id)
 );
-COMMENT ON TABLE arc_energo.topic_msg_queue IS 'Очередь сообщений для рассылки подписчикам';
 
--- Column comments
-
-COMMENT ON COLUMN arc_energo.topic_msg_queue.status IS '0 - к отправке
-10 - удачно отправлен всем
-20 - удачно отправлен хотя бы одному';
-
--- Table Triggers
-
--- DROP TRIGGER topic_msg_queue_ai ON arc_energo.topic_msg_queue;
-
-CREATE TRIGGER topic_msg_queue_ai AFTER
-INSERT
-    ON
-    arc_energo.topic_msg_queue FOR EACH ROW EXECUTE PROCEDURE new_topic_msg();
+COMMENT ON COLUMN arc_energo.topic_msg_queue.status IS '0 - created, 10 - sent with success, 20 - sent with error, 90 - received';
 
 -- Permissions
 

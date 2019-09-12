@@ -6,7 +6,6 @@ CREATE TABLE arc_energo.topic_subs (
 	tag varchar NOT NULL,
 	ip inet NOT NULL,
 	dt_subs timestamp NOT NULL DEFAULT now(),
-	last_msg_id int4 NULL,
 	CONSTRAINT topic_subs_pk PRIMARY KEY (tag, ip),
 	CONSTRAINT topic_subs_pc_fk FOREIGN KEY (ip) REFERENCES arc_pc(ip),
 	CONSTRAINT topic_subs_topic_fk FOREIGN KEY (tag) REFERENCES topic(tag) ON UPDATE CASCADE
