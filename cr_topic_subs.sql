@@ -3,12 +3,13 @@
 -- DROP TABLE arc_energo.topic_subs;
 
 CREATE TABLE arc_energo.topic_subs (
-	tag varchar NOT NULL,
-	ip inet NOT NULL,
-	dt_subs timestamp NOT NULL DEFAULT now(),
-	CONSTRAINT topic_subs_pk PRIMARY KEY (tag, ip),
-	CONSTRAINT topic_subs_pc_fk FOREIGN KEY (ip) REFERENCES arc_pc(ip),
-	CONSTRAINT topic_subs_topic_fk FOREIGN KEY (tag) REFERENCES topic(tag) ON UPDATE CASCADE
+    tag varchar NOT NULL,
+    ip inet NOT NULL,
+    dt_subs timestamp NOT NULL DEFAULT now(),
+    err_cnt int4 NULL DEFAULT 0,
+    CONSTRAINT topic_subs_pk PRIMARY KEY (tag, ip),
+    CONSTRAINT topic_subs_pc_fk FOREIGN KEY (ip) REFERENCES arc_pc(ip),
+    CONSTRAINT topic_subs_topic_fk FOREIGN KEY (tag) REFERENCES topic(tag) ON UPDATE CASCADE
 );
 COMMENT ON TABLE arc_energo.topic_subs IS 'Подписки на темы сообщений';
 
