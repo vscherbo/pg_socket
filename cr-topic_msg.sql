@@ -18,11 +18,11 @@ COMMENT ON TABLE arc_energo.topic_msg IS 'Cообщения для рассыл�
 
 -- DROP TRIGGER topic_msg_ai ON arc_energo.topic_msg;
 
-CREATE TRIGGER topic_msg_ai AFTER
-INSERT
-    ON
-    arc_energo.topic_msg FOR EACH ROW EXECUTE PROCEDURE new_topic_msg();
-
+create trigger topic_msg_ai after
+insert
+    on
+    arc_energo.topic_msg for each row
+    when (((new.tag)::text <> 'herald'::text)) execute procedure new_topic_msg();
 -- Permissions
 
 ALTER TABLE arc_energo.topic_msg OWNER TO arc_energo;
